@@ -2,12 +2,14 @@
 Description
 ===========
 
-Installs and configures Drupal; it creates the drupal db user, db password and the database;
-You will need to manually complete the installation step by visiting http://server_fqdn/install.php
+Installs and configures a virtual machine with `Vagrant <http://www.vagrantup.com/>`_ and also installs and configure a Drupal; it creates the Drupal db user, db password and the database; Furthermore you are able to manage modules and languages.
+
 
 ============
 Requirements
 ============
+
+First you need to install `VirtualBox <https://www.virtualbox.org/>`_, Vagrant and of course Ruby and Chef-Solo.
 
 Platform:
 ---------
@@ -38,8 +40,11 @@ Opscode cookbooks (http://github.com/opscode/cookbooks/tree/master)
 ATTRIBUTES:
 -----------
 
+If you want to install a different version you just have to customize the version attribute and checksum
+(sha256 checksum on the source).
+In the drupal role you can override the following attributes
+
 - drupal[:version] - version of drupal to download and install (default: 7.21)
-- drupal[:checksum] - sha256sum of the source tarball
 - drupal[:dir] - location to copy the drupal files. (default: /var/www/drupal)
 - drupal[:db][:database] - drupal database (default: drupal)
 - drupal[:db][:user] - drupal db user (default: drupal)
@@ -62,25 +67,13 @@ ATTRIBUTES:
 
 USAGE:
 ------
-Include the drupal recipe to install drupal on your system; this will enable also the drupal cron:
-
-  include_recipe "drupal"
-
-Include the drush recipe to install drush:
-
-  include_recipe "drupal::drush"
-
-Alternative use the role to install a complete ubuntu linux on your system first. The role also include the recipes drupal, drupal cron and drush:
+This repository is designed to use the role for installing a complete ubuntu linux on in a VM first. The role also include the recipes drupal, drupal cron and drush:
 
  run_list(role[drupal])
 
 If you are using Vagrant, add the role into the chef section of the Vagrantfile:
 
- chef.add_role 	"drupal"
-
-
-If you want to install a different version you just have to customize the version attribute and checksum
-(sha256 checksum on the source)
+ chef.add_role "drupal"
 
 ==================
 License and Author
@@ -110,7 +103,7 @@ limitations under the License.
 Credits
 =======
 
-The cookbook is heavily inspired and uses code from the drupal cookbook Marius Ducea (https://github.com/mdxp/drupal-cookbook).
+The cookbook is heavily inspired and uses code from the `drupal cookbook <https://github.com/mdxp/drupal-cookbook>`_ from Marius Ducea.
 I modified it in the way that it make use of the database cookbook and its able to manage modules (enable, disable) and languages (install, enable, disable, default, import).
 
-With version of the cookbook you can select between an Apache2 or a Nginx webserver. I took the code from this pull request https://github.com/mdxp/drupal-cookbook/pull/1 and make it work.
+With this version of the cookbook you can select between an Apache2 or a Nginx webserver. I took the code from this `pull request <https://github.com/mdxp/drupal-cookbook/pull/1>`_ and make it work.
