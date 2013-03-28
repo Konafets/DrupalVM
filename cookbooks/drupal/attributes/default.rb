@@ -45,9 +45,9 @@ default['drupal']['drush']['version'] = "7.x-5.8"
 default['drupal']['drush']['checksum'] = "15dd85f04c49b4a896b02dd6960d3140f3ae680bab3eea5d3aba27be0481e480"
 default['drupal']['drush']['dir'] = "/usr/local/drush"
 
-default['drupal']['modules'] = ["backup_migrate", "devel"]
-default['drupal']['module']['disable'] = ["color", "comment", "overlay", "rdf", "php"]
-default['drupal']['module']['enable'] = ["locale", "trigger", "translation"]
+default['drupal']['modules']['enable'] = ["locale", "trigger", "translation", "backup_migrate", "devel", "views"]
+default['drupal']['modules']['disable'] = ["color", "comment", "overlay", "rdf", "php"]
+
 
 default['drupal']['language']['add'] = ["de"]
 default['drupal']['language']['default'] = ["de"]

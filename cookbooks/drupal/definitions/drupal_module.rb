@@ -37,12 +37,6 @@ define :drupal_module, :action => :install, :dir => nil, :version => nil do
       command "#{node['drupal']['drush']['dir']}/drush -y en #{params[:name]}"
       not_if "#{node['drupal']['drush']['dir']}/drush -r #{params[:dir]} pm-list | grep '(#{params[:name]})' | grep -i 'enabled'"
     end
-  when :enable
-    execute "drush_en_module #{params[:name]}" do
-      cwd params[:dir]
-      command "#{node['drupal']['drush']['dir']}/drush -y en #{params[:name]}"
-      not_if "#{node['drupal']['drush']['dir']}/drush -r #{params[:dir]} pm-list | grep '(#{params[:name]})' | grep -i 'enabled'"
-    end
   when :disable
     execute "drush_dis_module #{params[:name]}" do
       cwd params[:dir]

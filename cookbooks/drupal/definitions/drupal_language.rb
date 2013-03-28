@@ -23,6 +23,7 @@ define :drupal_language, :action => :add, :name => nil, :dir => nil do
     command "#{node['drupal']['drush']['dir']}/drush -y dl drush_language"
     not_if "#{node['drupal']['drush']['dir']}/drush | grep language:"
   end
+  
   case params[:action]
   when :add
     execute "drush_add_language #{params[:name]}" do

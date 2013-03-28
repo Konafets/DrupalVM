@@ -48,7 +48,7 @@ Opscode cookbooks (http://github.com/opscode/cookbooks/tree/master)
 * drupal[:drush][:checksum] - sha256sum of the drush tarball
 * drupal[:drush][:dir] - where to install the drush file. (default: /usr/local/drush)
 
-* drupal[:modules][:enable] - a list of modules to enable. The module will be downloaded if it not found on the server. (default: empty)
+* drupal[:modules][:enable] - a list of modules to enable. The module will be downloaded if it not found locally. (default: empty)
 * drupal[:modules][:disable] - a list of modules to disable (default: empty)
 
 * drupal[:language][:add] - a list of languages to add. Use the langcode to define the language.
