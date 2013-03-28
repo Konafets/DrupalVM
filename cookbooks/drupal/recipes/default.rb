@@ -38,16 +38,16 @@ when 'rhel', 'fedora'
 end
 
 # Setting up a webserver
-if node[:drupal][:webserver] = "apache2"
+if node['drupal']['webserver'] == "apache2"
   include_recipe %w{apache2 apache2::mod_php5 apache2::mod_rewrite apache2::mod_expires}
-elsif node[:drupal][:webserver] = "nginx"
+elsif node['drupal']['webserver'] == "nginx"
   include_recipe %w{nginx php-fpm}
 else
   log("Only webservers currently supported: apache2 and nginx. You have: #{node[:drupal][:webserver]}") { level :warn }
 end
 
 # Setting up a database engine
-if node[:drupal][:database_engine] == 'mysql'
+if node['drupal']['database_engine'] == 'mysql'
   include_recipe %w{php::module_mysql database::mysql}
   
   if node['drupal']['site']['host'] == "localhost"
@@ -55,10 +55,10 @@ if node[:drupal][:database_engine] == 'mysql'
   else
     include_recipe "mysql::client"
   end
-elsif node[:drupal][:database_engine] == 'postgres'
+elsif node['drupal']['database_engine'] == 'postgres'
   include_recipe %w{php::module_pgsql database::postgresql}
 else
-  log("Only databases currently supported: mysql and postgres. You have: #{node[:drupal][:database_engine]}") {level :warn}
+  log("Only databases currently supported: mysql and postgres. You have: #{node['drupal']['database_engine']}") {level :warn}
 end
 
 
@@ -131,54 +131,58 @@ template "#{node['drupal']['dir']}/sites/default/settings.php" do
   not_if {File.exists?("#{node['drupal']['dir']}/sites/default/settings.php")}
 end
 
-web_app "drupal" do
-  template "drupal.conf.erb"
-  docroot node['drupal']['dir']
-  server_name server_fqdn
-  server_aliases node['fqdn']
-end
 
 include_recipe "drupal::cron"
 
-execute "disable-default-site" do
-   command "sudo a2dissite default"
-   notifies :reload, "service[apache2]", :delayed
-   only_if do File.exists? "#{node['apache']['dir']}/sites-enabled/default" end
+if node['drupal']['webserver'] == "apache2"
+  web_app "drupal" do
+    template "drupal.conf.erb"
+    docroot node['drupal']['dir']
+    server_name server_fqdn
+    server_aliases node['fqdn']
+  end
+
+  execute "disable-default-site" do
+    command "sudo a2dissite default"
+    notifies :reload, "service[apache2]", :delayed
+    only_if do File.exists? "#{node['apache']['dir']}/sites-enabled/default" end
+  end
+elsif node['drupal']['webserver'] == "nginx"
+  template "#{node['nginx']['dir']}/sites-enabled/drupal" do
+    source "sites.conf.erb"
+    owner "root"
+    group "root"
+    mode "0600"
+    variables(
+      :docroot => "#{node['drupal']['dir']}",
+      :server_name => server_fqdn
+    )
+  end
+  
+  nginx_site "drupal" do
+    :enable
+  end
 end
 
-if node['drupal']['modules']
-  node['drupal']['modules'].each do |m|
+if node['drupal']['modules']['enable']
+  node['drupal']['modules']['enable'].each do |m|
     if m.is_a?Array
       drupal_module m.first do
         version m.last
         dir node['drupal']['dir']
+        action :install
       end
     else
       drupal_module m do
         dir node['drupal']['dir']
+        action :install
       end
     end
   end
 end
 
-if node['drupal']['module']['enable']
-  node['drupal']['module']['enable'].each do |m|
-    if m.is_a?Array
-      drupal_module m.first do
-        dir node['drupal']['dir']
-        action :enable
-      end
-    else
-      drupal_module m do
-        dir node['drupal']['dir']
-        action :enable
-      end
-    end
-  end
-end
-
-if node['drupal']['module']['disable']
-  node['drupal']['module']['disable'].each do |m|
+if node['drupal']['modules']['disable']
+  node['drupal']['modules']['disable'].each do |m|
     if m.is_a?Array
       drupal_module m.first do
         dir node['drupal']['dir']

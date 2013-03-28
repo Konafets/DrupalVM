@@ -16,7 +16,7 @@ override_attributes({
     "site" => {
       "name" => "CMS Labor 2013 - Drupal"
     },
-    "webserver" => "apache2",
+    "webserver" => "nginx",
     "database_engine" => "mysql"
   },
   "mysql" => {
