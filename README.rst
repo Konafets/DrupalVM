@@ -51,6 +51,10 @@ In the drupal role you can override the following attributes
 - drupal[:db][:host] - durpal db host (default: localhost)
 - drupal[:db][:password] - drupal db password (randomly generated if not defined)
 - drupal[:src] - where to place the drupal source tarball (default: Chef::Config[:file_cache_path])
+- default['drupal']['webserver'] - select the webserver. Valid values are "apache2" or "nginx" (default: empty)
+- default['drupal']['web']['owner'] - set the user (default: "www-data")
+- default['drupal']['web']['group'] - set the group (default: "www-data")
+
 
 - drupal[:drush][:version] - version of drush to download (default: 3.3)
 - drupal[:drush][:checksum] - sha256sum of the drush tarball
