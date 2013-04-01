@@ -71,9 +71,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision :shell, :inline => "sudo apt-get update"  
 
   config.vm.provision :chef_solo do |chef|
-    chef.cookbooks_path = "cookbooks"
     chef.roles_path     = "roles"
-    chef.data_bags_path = "data_bags"
     chef.log_level = :debug
 
     # These following roles include the specific recipes

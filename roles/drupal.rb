@@ -10,19 +10,22 @@ override_attributes({
     "dir" => "/var/www/labor-drupal",
     "version" => "7.21",
     "db" => {
+      "driver" => "mysql",
       "database" => "labor-drupal",
-      "user" => "labor-drupal"
+      "user" => "labor-drupal",
+      "password" => "mysql#2013"
     },
     "site" => {
       "name" => "CMS Labor 2013 - Drupal"
     },
-    "webserver" => "nginx",
-    "database_engine" => "mysql"
+    "webserver" => "nginx"
   },
   "mysql" => {
-    "bind_address" => "127.0.0.1",
     "server_root_password" => "mysql#2013",
     "server_debian_password" => "mysql#2013",
     "server_repl_password" => "mysql#2013"
-  }  
+  },
+  "nginx" => {
+    "default_site_enabled" => false
+  }
 })

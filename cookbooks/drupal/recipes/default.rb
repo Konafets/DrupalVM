@@ -23,12 +23,6 @@ include_recipe %w{php php::module_gd php::module_curl php::module_apc}
 
 include_recipe "drupal::drush"
 
-user 'vagrant' do
-  gid "www-data"
-  shell "/bin/zsh"
-  action :modify
-end
-
 # Centos does not include the php-dom extension in it's minimal php install.
 case node['platform_family']
 when 'rhel', 'fedora'
@@ -37,17 +31,8 @@ when 'rhel', 'fedora'
   end
 end
 
-# Setting up a webserver
-if node['drupal']['webserver'] == "apache2"
-  include_recipe %w{apache2 apache2::mod_php5 apache2::mod_rewrite apache2::mod_expires}
-elsif node['drupal']['webserver'] == "nginx"
-  include_recipe %w{nginx php-fpm}
-else
-  log("Only webservers currently supported: apache2 and nginx. You have: #{node[:drupal][:webserver]}") { level :warn }
-end
-
 # Setting up a database engine
-if node['drupal']['database_engine'] == 'mysql'
+if node['drupal']['db']['driver'] == 'mysql'
   include_recipe %w{php::module_mysql database::mysql}
   
   if node['drupal']['site']['host'] == "localhost"
@@ -55,12 +40,27 @@ if node['drupal']['database_engine'] == 'mysql'
   else
     include_recipe "mysql::client"
   end
-elsif node['drupal']['database_engine'] == 'postgres'
+elsif node['drupal']['db']['driver'] == 'postgres'
   include_recipe %w{php::module_pgsql database::postgresql}
 else
   log("Only databases currently supported: mysql and postgres. You have: #{node['drupal']['database_engine']}") {level :warn}
 end
 
+# Setting up a webserver
+if node['drupal']['webserver'] == "apache2"
+  include_recipe %w{apache2 apache2::mod_php5 apache2::mod_rewrite apache2::mod_expires}
+elsif node['drupal']['webserver'] == "nginx"
+  include_recipe %w{nginx php-fpm}
+    
+  directory '/var/www' do
+    owner 'root'
+    group 'root'
+    mode 0775
+    action :create
+  end
+else
+  log("Only webservers currently supported: apache2 and nginx. You have: #{node[:drupal][:webserver]}") { level :warn }
+end
 
 # Create database
 connection_info = {:host => node['drupal']['db']['host'], :username => 'root', :password => node['mysql']['server_root_password']}
@@ -74,7 +74,7 @@ end
 # Create user and grant all rights
 mysql_database_user node['drupal']['db']['user'] do
   connection connection_info
-  password node['mysql']['server_root_password']
+  password node['drupal']['db']['password']
   database_name node['drupal']['db']['database']
   host node['drupal']['db']['host']
   privileges [:all]
@@ -83,7 +83,7 @@ end
 
 mysql_database_user node['drupal']['db']['user'] do
   connection connection_info
-  password node['mysql']['server_root_password']
+  password node['drupal']['db']['password']
   database_name node['drupal']['db']['database']
   host '%'
   privileges [:all]
@@ -100,8 +100,8 @@ end
 execute "download-and-install-drupal" do
   cwd  File.dirname(node['drupal']['dir'])
   command "#{node['drupal']['drush']['dir']}/drush -y dl drupal-#{node['drupal']['version']} --destination=#{File.dirname(node['drupal']['dir'])} --drupal-project-rename=#{File.basename(node['drupal']['dir'])} && \
-  #{node['drupal']['drush']['dir']}/drush -y site-install -r #{node['drupal']['dir']} --account-name=#{node['drupal']['db']['user']} --account-pass=#{node['mysql']['server_root_password']} --site-name=\"#{node['drupal']['site']['name']}\" \
-  --db-url=mysql://#{node['drupal']['db']['user']}:'#{node['mysql']['server_root_password']}'@#{node['drupal']['db']['host']}/#{node['drupal']['db']['database']}"
+  #{node['drupal']['drush']['dir']}/drush -y site-install -r #{node['drupal']['dir']} --account-name=#{node['drupal']['site']['admin']} --account-pass=#{node['drupal']['site']['pass']} --site-name=\"#{node['drupal']['site']['name']}\" \
+  --db-url=mysql://#{node['drupal']['db']['user']}:'#{node['drupal']['db']['password']}'@#{node['drupal']['db']['host']}/#{node['drupal']['db']['database']}"
   not_if "#{node['drupal']['drush']['dir']}/drush -r #{node['drupal']['dir']} status | grep #{node['drupal']['version']}"
 end
 
@@ -148,7 +148,7 @@ if node['drupal']['webserver'] == "apache2"
     only_if do File.exists? "#{node['apache']['dir']}/sites-enabled/default" end
   end
 elsif node['drupal']['webserver'] == "nginx"
-  template "#{node['nginx']['dir']}/sites-enabled/drupal" do
+  template "#{node['nginx']['dir']}/sites-available/drupal" do
     source "sites.conf.erb"
     owner "root"
     group "root"
@@ -158,9 +158,18 @@ elsif node['drupal']['webserver'] == "nginx"
       :server_name => server_fqdn
     )
   end
-  
+
   nginx_site "drupal" do
-    :enable
+    enable :true
+  end
+
+  execute "disable-default-site" do
+    command "sudo nxdissite default"
+    notifies :reload, "service[nginx]", :delayed
+    only_if do
+      ::File.symlink?("#{node['nginx']['dir']}/sites-enabled/default") ||
+        ::File.symlink?("#{node['nginx']['dir']}/sites-enabled/000-default")
+    end
   end
 end
 

@@ -22,6 +22,7 @@
 
 default['drupal']['version'] = "7.21"
 default['drupal']['dir'] = "/var/www/drupal"
+default['drupal']['db']['driver'] = "mysql"
 default['drupal']['db']['database'] = "drupal"
 default['drupal']['db']['user'] = "drupal"
 default['drupal']['db']['host'] = "localhost"
@@ -30,11 +31,7 @@ default['drupal']['site']['pass'] = "drupaladmin"
 default['drupal']['site']['name'] = "Drupal7"
 default['drupal']['site']['host'] = "localhost"
 default['drupal']['apache']['port'] = "80"
-default['drupal']['webserver'] = ""
-default['drupal']['web']['owner'] = "www-data"
-default['drupal']['web']['group'] = "www-data"
-default['drupal']['skip_php'] = false
-default['drupal']['database_engine'] = ""
+default['drupal']['webserver'] = "apache2"
 
 ::Chef::Node.send(:include, Opscode::OpenSSL::Password)
 

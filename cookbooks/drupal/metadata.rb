@@ -3,7 +3,7 @@ maintainer_email "blueduck@gmx.net"
 license          "Apache 2.0"
 name             "drupal"
 description      "Installs/Configures drupal"
-long_description IO.read(File.join(File.dirname(__FILE__), 'README.rst'))
+#long_description IO.read(File.join(File.dirname(__FILE__), 'README.rst'))
 version          "1.0.0"
 recipe           "drupal", "Installs and configures Drupal"
 recipe           "drupal::cron", "Sets up the default drupal cron"
