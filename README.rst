@@ -84,10 +84,9 @@ Please send me hints if you have some improvements or encounter any problems.
 
         $ git clone https://github.com/Konafets/DrupalVM.git
 
-    into your terminal. 
-    (If not, its a good point to start with ;-))
+   into your terminal. (If not, its a good point to start with ;-))
 
-    If you are in hurry or don't like GIT, you can download a ZIP Achive of the code by clicking on this link https://github.com/Konafets/DrupalVM/archive/master.zip and extract it.
+   If you are in hurry or don't like GIT, you can download a ZIP Achive of the code by clicking on this link https://github.com/Konafets/DrupalVM/archive/master.zip and extract it.
 
 USAGE:
 ------
@@ -98,11 +97,11 @@ On your commandline change into the extracted / cloned folder and type::
 into the terminal. If you installed everything correctly its time to lean back, grab a cup of coffee and watch the magic.
 
 
-Test your Drupal installation
+Test your Drupal installation:
+------------------------------
+Open a new tab in your browser and type localhost:8080 into the address bar. It should present you the frontend of your Drupal installation.
 
-    Open a new tab in your browser and type localhost:8080 into the address bar. It should present you the frontend of your Drupal installation.
-
-    Enter ``labor-drupal`` and ``drupaladmin`` as username and password. **I recommend you to change the password.**
+Enter ``labor-drupal`` and ``drupaladmin`` as username and password. **I recommend you to change the password.**
 
 
 ATTRIBUTES:
