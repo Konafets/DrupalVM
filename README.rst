@@ -80,8 +80,7 @@ Please send me hints if you have some improvements or encounter any problems.
         $ vagrant plugin install berkshelf-vagrant
 
 5. Get the DrupalVM configuration files
-   
-    If you use `GIT <http://git-scm.com/>`_, get the sources by typing this::
+   If you use `GIT <http://git-scm.com/>`_, get the sources by typing this::
 
         $ git clone https://github.com/Konafets/DrupalVM.git
 
@@ -92,11 +91,11 @@ Please send me hints if you have some improvements or encounter any problems.
 
 USAGE:
 ------
-    On your commandline change into the extracted / cloned folder and type::
+On your commandline change into the extracted / cloned folder and type::
 
-        $ vagrant up
-    
-    into the terminal. If you installed everything correctly its time to lean back, grab a cup of coffee and watch the magic.
+	$ vagrant up
+
+into the terminal. If you installed everything correctly its time to lean back, grab a cup of coffee and watch the magic.
 
 
 Test your Drupal installation
