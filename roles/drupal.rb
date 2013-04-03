@@ -16,7 +16,7 @@ override_attributes({
       "password" => "mysql#2013"
     },
     "site" => {
-      "admin" => "labor-drupal"
+      "admin" => "labor-drupal",
       "name" => "CMS Labor 2013 - Drupal"
     },
     "webserver" => "nginx"
