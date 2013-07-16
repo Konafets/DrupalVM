@@ -18,6 +18,9 @@
 # limitations under the License.
 #
 
+# Set up the base system
+include_recipe %w{postfix git vim zsh curl}
+
 # Set up common php 
 include_recipe %w{php php::module_gd php::module_curl php::module_apc}
 
@@ -53,8 +56,8 @@ elsif node['drupal']['webserver'] == "nginx"
   include_recipe %w{nginx php-fpm}
     
   directory '/var/www' do
-    owner 'root'
-    group 'root'
+    owner 'www-data'
+    group 'www-data'
     mode 0775
     action :create
   end
@@ -150,8 +153,8 @@ if node['drupal']['webserver'] == "apache2"
 elsif node['drupal']['webserver'] == "nginx"
   template "#{node['nginx']['dir']}/sites-available/drupal" do
     source "sites.conf.erb"
-    owner "root"
-    group "root"
+    owner "www-data"
+    group "www-data"
     mode "0600"
     variables(
       :docroot => "#{node['drupal']['dir']}",

@@ -54,6 +54,8 @@ Vagrant.configure("2") do |config|
   config.ssh.max_tries = 40
   config.ssh.timeout   = 120
 
+  config.berkshelf.enabled = true
+
   # The path to the Berksfile to use with Vagrant Berkshelf
   # config.berkshelf.berksfile_path = "./Berksfile"
   #
@@ -68,15 +70,17 @@ Vagrant.configure("2") do |config|
   # Enable provisioning with chef solo, specifying a cookbooks path, roles
   # path, and data_bags path (all relative to this Vagrantfile), and adding
   # some recipes and/or roles.
-  config.vm.provision :shell, :inline => "sudo apt-get update"  
+  config.vm.provision :shell, :inline => "sudo apt-get update"
 
   config.vm.provision :chef_solo do |chef|
     chef.roles_path     = "roles"
     chef.log_level = :debug
 
     # These following roles include the specific recipes
-    chef.add_role 	"drupal"
-    
+	 chef.add_role	"drupal"           
+	 #chef.add_role	"ubuntu"
+	 
+     
   
     # You may also specify custom JSON attributes:
     chef.json = { :mysql_password => "" }

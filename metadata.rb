@@ -7,7 +7,7 @@ description      "Installs/Configures drupal"
 version          "1.0.0"
 #role             "drupal", "Installs and configures Drupal"
 
-%w{ php php-fpm apache2 nginx build-essential mysql git openssl firewall cron database apt curl ubuntu zsh vim}.each do |cb|
+%w{ build-essential postfix php php-fpm apache2 nginx mysql git openssl firewall cron database apt curl ubuntu zsh vim}.each do |cb|
   depends cb
 end
 

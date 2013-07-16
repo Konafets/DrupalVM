@@ -2,8 +2,7 @@ name "drupal"
 description "Install Drupal 7 on this VM"
 
 run_list(
-  "recipe[drupal]",
-  "role[ubuntu]"
+  "recipe[drupal]"
 )
 override_attributes({
   "drupal" => {
