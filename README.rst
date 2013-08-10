@@ -32,17 +32,16 @@ This instructions where tested under OSX. I assume that they also working for Li
 
 Please send me hints if you have some improvements or encounter any problems.
 
-1. Install Virtualbox
-    Got to https://www.virtualbox.org/wiki/Downloads and pick the right one for your system.
-
-2. Install Vagrant
-    Vagrant is a program which sit on top of Virtualbox. It communicates over an API with Virtualbox and you communicate over the commandline with Vagrant.
-
-    At the end you only need one configuration file and a few commands to set up a virtual machine.
-
-    Go to http://www.vagrantup.com/ and download the right version for your system.
-
-3. Installing Ruby
+1. Install XCode
+    Go to https://developer.apple.com/xcode/ and follow the instruction there
+  
+2. Install the Command Line Tools for XCode
+    Go to http://stackoverflow.com/questions/9329243/xcode-4-4-command-line-tools and follow the instructions
+    
+3. Install MacPorts
+   http://www.macports.org/install.php
+   
+4. Installing Ruby
     If you know that Ruby is installed on your system to to the next topic.
     If you don't know if and which version is installed, type::
 
@@ -68,7 +67,18 @@ Please send me hints if you have some improvements or encounter any problems.
     Windows users:
         Go to http://rubyinstaller.org/ and install it from there
 
-4. Installing Berkshelf
+5. Install Virtualbox
+    Got to https://www.virtualbox.org/wiki/Downloads and pick the right one for your system.
+
+6. Install Vagrant
+    Vagrant is a program which sit on top of Virtualbox. It communicates over an API with Virtualbox and you communicate over the commandline with Vagrant.
+
+    At the end you only need one configuration file and a few commands to set up a virtual machine.
+
+    Go to http://www.vagrantup.com/ and download the right version for your system.
+
+
+7. Installing Berkshelf
     Ruby is the language which can extended with plugins. Rubys plugin manager is called `RubyGem <http://rubygems.org/>`_ or just gem on the commandline. This was installed with Ruby.
 
     To install berkshelf you have to just type this command into your terminal::
@@ -77,9 +87,9 @@ Please send me hints if you have some improvements or encounter any problems.
 
     You also have to install Berkshelf into Vagrant::
 
-        $ vagrant plugin install berkshelf-vagrant
+        $ vagrant plugin install vagrant-berkshelf
 
-5. Get the DrupalVM configuration files
+8. Get the DrupalVM configuration files
    If you use `GIT <http://git-scm.com/>`_, get the sources by typing this::
 
         $ git clone https://github.com/Konafets/DrupalVM.git
