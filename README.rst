@@ -39,7 +39,7 @@ Please send me hints if you have some improvements or encounter any problems.
     Go to http://stackoverflow.com/questions/9329243/xcode-4-4-command-line-tools and follow the instructions
     
 3. Install MacPorts
-   http://www.macports.org/install.php
+    Got to http://www.macports.org/install.php
    
 4. Installing Ruby
     If you know that Ruby is installed on your system to to the next topic.
